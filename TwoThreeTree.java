@@ -42,6 +42,11 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
         return root.search(x).toString();           // Else begin a recursive search from the root.
     }
 
+    void clear()
+    {
+        root = null;
+    }
+
     public Iterator<Node> iterator()
     {
         if (modified)
@@ -92,7 +97,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
             keys.add(data);
         }
 
-        void addKey(T x)
+        private void addKey(T x)
         {
             this.keys.add(x);                                  // Insert x at the last position
             int lastIndex = this.keys.size()-1;
@@ -107,7 +112,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
             }
         }
 
-        boolean insert(T x)
+        private boolean insert(T x)
         {
             if (this.keys.contains(x))                                    // If the node contains key, return false
                 return false;
@@ -145,7 +150,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
             return false;                                               // and it's key adjusted inside the parent so it became a 3-node.
         }
 
-        void splitify()
+        private void splitify()
         {
             Node left = new Node(this.keys.get(0));
             Node right = new Node(this.keys.get(2));
@@ -165,7 +170,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
             this.keys.add(tempKey);                             // there.
         }
 
-        Node search(T val)
+        private Node search(T val)
         {
             if (this.children.size() == 0 || this.keys.contains(val))            // If the node is a leaf or has the key, return that node
                 return this;
