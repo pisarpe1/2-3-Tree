@@ -1,6 +1,9 @@
 # Generic 2-3 Tree
-<h2>Balanced 2-3 Search Tree</h2>
-<p>A normal binary tree fails to produce a lg(n) lookup when the root node has a value small compared to the other values in the tree. As a result, the resulting structure looks more like a vine than a tree. In order to keep the shape of the tree intact, we have B-Trees that has all its leaves at the same height and is always balanced.</p>
+<h2>Binary Tree vs Balanced 2-3 Tree</h2>
+<p>A normal binary tree fails to produce a lg(n) lookup when the root node has a value small compared to the other values in the tree. Because of that, the resulting structure looks more like a vine than a tree as shown below where larger values pile up and forms almost a LinkedList kind of structure. For the following example, the order of adding values is [1,0,2,3,4,5]
+                 <img width="519" alt="screen shot 2018-04-12 at 11 05 07 pm" src="https://user-images.githubusercontent.com/28474117/38719306-0be4c990-3ea6-11e8-90c1-7e721722e6a8.png"><p>
+<p>In order to keep the shape of the tree intact, we have B-Trees that has all its leaves at the same height and is always balanced. 2-3 Tree is a specific form of B-Trees. If we consider the above example and the values in the same order, the 2-3 Tree looks as follows.
+<img width="500" alt="screen shot 2018-04-12 at 11 21 12 pm" src="https://user-images.githubusercontent.com/28474117/38719731-4a38e418-3ea8-11e8-86ab-d045977b4f95.png"></p>
 <h2>Properties of a 2-3 Tree</h2>
 <ul>
   <li>Every internal node is a 2-node or a 3-node.</li>
