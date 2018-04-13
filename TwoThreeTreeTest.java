@@ -1,5 +1,6 @@
 import org.junit.Test;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -98,6 +99,9 @@ public class TwoThreeTreeTest {
     {
         TwoThreeTree<Character> t = new TwoThreeTree<>();
         char[] a = {'o', 't', 's', 'd', 'y', 'h', 'u', 'u', 'g', 'f', 'p', 'e', 'z', 't', 'b', 'v'};
+        HashSet<Character> h = new HashSet<>();
+        for (char q: a)
+            h.add(q);
         ArrayList<Character> b = new ArrayList<>();
         for (char c: a)
             b.add(c);
@@ -114,9 +118,9 @@ public class TwoThreeTreeTest {
         assertEquals("o p", t.search('o'));
         assertEquals("t", t.search('t'));
         assertEquals("u y", t.search('y'));
-        assertEquals("t", t.search('t'));
         assertEquals("v", t.search('v'));
         assertEquals("z", t.search('z'));
+        assertEquals(h.size(), t.size());
     }
 
     @Test
@@ -200,6 +204,7 @@ public class TwoThreeTreeTest {
         t.insert(7);
         t.insert(4);
 
+        assertEquals(7, t.size());
         String expected = "9";
         assertEquals(expected, t.search(9));
         expected = "4";

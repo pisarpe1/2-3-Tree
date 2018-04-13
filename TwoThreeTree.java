@@ -24,9 +24,11 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
     void insert(T x)
     {
         if (root == null)                           // If root is null, then create a new root with null as the parent
+        {
             root = new Node(x);
+            size++;
+        }
         root.insert(x);                             // Otherwise induce a recursive insert.
-        size++;
         modified = true;
     }
 
@@ -128,6 +130,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
             else                                                        // Its a leaf, just add the key and then check if it needs to split.
             {
                 this.addKey(x);
+                size++;                                                 // Key wasn't a duplicate a could be inserted in the tree, therefore increase the size.
                 if (this.keys.size() == 3)
                 {
                     this.splitify();                                    // Split the node and return true to let the parent know
