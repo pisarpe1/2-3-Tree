@@ -76,11 +76,11 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
             else
             {
                 traverse(n.children.get(0));                // Otherwise, first traverse the left branch
-                ordered.add(new Node(n.keys.get(0)));       // When it is done, add the node containing key 1 to keep it ordered.
-                traverse(n.children.get(1));                // Then traverse the middle/right branch
+                ordered.add(new Node(n.keys.get(0)));       // When it is done, create a new node containing key 1 of the node n to keep it ordered.
+                traverse(n.children.get(1));                // Then traverse the middle/right branch of n.
                 if (n.children.size() == 3)                 // If there are 3 branches, then we still need to traverse it.
                 {
-                    ordered.add(new Node(n.keys.get(1)));   // Before we traverse, add a node containing the second key to the list since everything is going to be greater than it in the right branch.
+                    ordered.add(new Node(n.keys.get(1)));   // Before we traverse, create a new node containing the 2nd key of n to the list since everything is going to be greater than it in the right branch.
                     traverse(n.children.get(2));            // Then traverse the last branch and add all encountered nodes in order.
                 }
             }
