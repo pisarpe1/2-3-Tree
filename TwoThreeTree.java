@@ -49,38 +49,39 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
     public Iterator<Node> iterator()
     {
-        if (modified)
+        if (modified)                           // Build in-order Linked-List only if the tree was modified.
         {
-            traverse.traverseTree();
-            modified = false;
+            traverse.traverseTree();            // Traverse the tree
+            modified = false;                   // Set flag to false since we just built a linked-list.
         }
-        return traverse.ordered.iterator();
+        return traverse.ordered.iterator();     // Delegate the task of iterator to Linked-List's in built iterator.
     }
 
     //-----------------------------------------Inner Iterator Class-------------------------------------------------//
 
     private class Traversal
     {
-        LinkedList<Node> ordered = new LinkedList<>();
+        LinkedList<Node> ordered;
 
         void traverseTree()
         {
-            traverse(root);
+            ordered = new LinkedList<>();                   // Reset the ordered list. traverseTree will be only called in case of modification
+            traverse(root);                                 // Initialize traversal from the root.
         }
 
         void traverse(Node n)
         {
-            if (n.children.size() == 0)
+            if (n.children.size() == 0)                     // If it's a leaf node, add it to the linked list.
                 ordered.add(n);
             else
             {
-                traverse(n.children.get(0));
-                ordered.add(new Node(n.keys.get(0)));
-                traverse(n.children.get(1));
-                if (n.children.size() == 3)
+                traverse(n.children.get(0));                // Otherwise, first traverse the left branch
+                ordered.add(new Node(n.keys.get(0)));       // When it is done, add the node containing key 1 to keep it ordered.
+                traverse(n.children.get(1));                // Then traverse the middle/right branch
+                if (n.children.size() == 3)                 // If there are 3 branches, then we still need to traverse it.
                 {
-                    ordered.add(new Node(n.keys.get(1)));
-                    traverse(n.children.get(2));
+                    ordered.add(new Node(n.keys.get(1)));   // Before we traverse, add a node containing the second key to the list since everything is going to be greater than it in the right branch.
+                    traverse(n.children.get(2));            // Then traverse the last branch and add all encountered nodes in order.
                 }
             }
         }
@@ -99,7 +100,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
         private void addKey(T x)
         {
-            this.keys.add(x);                                  // Insert x at the last position
+            this.keys.add(x);                                 // Insert x at the last position
             int lastIndex = this.keys.size()-1;
             for (int i = 0; i < lastIndex; i++)               // Repeatedly check the key at index i if its greater than key at index keySize
             {
@@ -114,11 +115,11 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
         private boolean insert(T x)
         {
-            if (this.keys.contains(x))                                    // If the node contains key, return false
+            if (this.keys.contains(x))                                               // If the node contains key, return false
                 return false;
 
             int i = 0;
-            while (i < this.keys.size() && x.compareTo(this.keys.get(i)) > 0)                // Find the correct child to insert at.
+            while (i < this.keys.size() && x.compareTo(this.keys.get(i)) > 0)        // Find the correct child to insert at.
                 i++;
             boolean childWasSplit;
 
@@ -172,13 +173,13 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
         private Node search(T val)
         {
-            if (this.children.size() == 0 || this.keys.contains(val))            // If the node is a leaf or has the key, return that node
+            if (this.children.size() == 0 || this.keys.contains(val))                     // If the node is a leaf or has the key, return that node
                 return this;
             else
             {
                 int i = 0;
-                while (i < this.keys.size() && val.compareTo(this.keys.get(i)) > 0)          // Else recursively search that appropriate branch by making use
-                    i++;                                                // of the index i.
+                while (i < this.keys.size() && val.compareTo(this.keys.get(i)) > 0)       // Else recursively search that appropriate branch by making use
+                    i++;                                                                  // of the index i.
                 return this.children.get(i).search(val);
             }
         }
