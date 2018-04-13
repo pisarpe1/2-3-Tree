@@ -10,7 +10,7 @@
   <li>Every internal node is a 2-node or a 3-node.</li>
   <li>All the leaves are at the same level.</li>
   <li>Data is kept in a sorted order.</li>
-  <li>Searching, Insertion and Deletion of data belongs to <img src="http://latex.codecogs.com/svg.latex?$&space;\textrm{O}(log_3&space;n)$" title="$ \textrm{O}(log_3 n)$" /></li>
+  <li>Searching, Insertion and Deletion of data belongs to <img src="http://latex.codecogs.com/svg.latex?\inline&space;\fn_phv&space;$\text{O}(log_3&space;n)$" title="$\text{O}(log_3 n)$" /> </li>
 </ul>
 <h2>API</h2>
 The code is for a generic 2-3 Tree that utilizes the recursive nature of trees to express its structure with minimal and readable code.
