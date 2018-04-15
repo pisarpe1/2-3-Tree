@@ -47,9 +47,10 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
     void clear()
     {
         root = null;
+        size = 0;
     }
 
-    public Iterator<Node> iterator()
+    public Iterator<T> iterator()
     {
         if (modified)                           // Build in-order Linked-List only if the tree was modified.
         {
@@ -63,7 +64,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
     private class Traversal
     {
-        LinkedList<Node> ordered;
+        LinkedList<T> ordered;
 
         void traverseTree()
         {
@@ -73,16 +74,16 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
         void traverse(Node n)
         {
-            if (n.children.size() == 0)                     // If it's a leaf node, add it to the linked list.
-                ordered.add(n);
+            if (n.children.size() == 0)                     // If it's a leaf node, add all its key to the linked list
+                ordered.addAll(n.keys);
             else
             {
                 traverse(n.children.get(0));                // Otherwise, first traverse the left branch
-                ordered.add(new Node(n.keys.get(0)));       // When it is done, create a new node containing key 1 of the node n to keep it ordered.
+                ordered.add(n.keys.get(0));                 // When it is done, create add key 1 of the node n to keep it ordered.
                 traverse(n.children.get(1));                // Then traverse the middle/right branch of n.
                 if (n.children.size() == 3)                 // If there are 3 branches, then we still need to traverse it.
                 {
-                    ordered.add(new Node(n.keys.get(1)));   // Before we traverse, create a new node containing the 2nd key of n to the list since everything is going to be greater than it in the right branch.
+                    ordered.add(n.keys.get(1));             // Before we traverse, add the 2nd key of n to the list since everything is going to be greater than it in the right branch.
                     traverse(n.children.get(2));            // Then traverse the last branch and add all encountered nodes in order.
                 }
             }
@@ -90,7 +91,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
     }
 
     //-------------------------------------------INNER CLASS NODE---------------------------------------------------//
-    public class Node
+    private class Node
     {
         ArrayList<T> keys = new ArrayList<>(3);
         ArrayList<Node> children = new ArrayList<>(4);

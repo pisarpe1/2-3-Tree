@@ -356,7 +356,7 @@ public class TwoThreeTreeTest {
         t.insert(5);
         t.insert(9);
         t.insert(0);
-        for (TwoThreeTree.Node aT : (Iterable<TwoThreeTree.Node>) t)
+        for (Integer aT : (Iterable<Integer>) t)
             System.out.print(aT + " ");
     }
 
