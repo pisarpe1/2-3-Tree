@@ -64,11 +64,11 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
     private class Traversal
     {
-        LinkedList<T> ordered;
+        ArrayList<T> ordered;
 
         void traverseTree()
         {
-            ordered = new LinkedList<>();                   // Reset the ordered list. traverseTree will be only called in case of modification
+            ordered = new ArrayList<>();                   // Reset the ordered list. traverseTree will be only called in case of modification
             traverse(root);                                 // Initialize traversal from the root.
         }
 
