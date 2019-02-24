@@ -37,11 +37,11 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
         return size;
     }
 
-    String search(T x)
+    boolean search(T x)
     {
         if (root == null)                           // If the root is null, then tree doesn't exist -> return null
-            return null;
-        return root.search(x).toString();           // Else begin a recursive search from the root.
+            return false;
+        return root.search(x).keys.contains(x);
     }
 
     void clear()
