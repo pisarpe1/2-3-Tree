@@ -105,13 +105,13 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
         private void addKey(T x)
         {
-            this.keys.add(x);                                 // Insert x at the last position
+            this.keys.add(x);                                 // vlož x do poslední pozice
             int lastIndex = this.keys.size()-1;
-            for (int i = 0; i < lastIndex; i++)               // Repeatedly check the key at index i if its greater than key at index keySize
+            for (int i = 0; i < lastIndex; i++)               //  Opakovaně zkontrolujte klíč v indexu i, pokud je větší než klíč v indexu keySize  
             {
                 if (this.keys.get(i).compareTo(this.keys.get(lastIndex)) > 0)
                 {
-                    T temp = this.keys.get(i);                // If it is, swap them and increase the i
+                    T temp = this.keys.get(i);                //  Pokud ano, vyměňte je a zvyšte i
                     this.keys.set(i, this.keys.get(lastIndex));
                     this.keys.set(lastIndex, temp);
                 }
@@ -120,77 +120,76 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
         private boolean insert(T x)
         {
-            if (this.keys.contains(x))                                               // If the node contains key, return false
+            if (this.keys.contains(x))                                               // Pokud uzel obsahuje klíč, vraťte false
                 return false;
 
             int i = 0;
-            while (i < this.keys.size() && x.compareTo(this.keys.get(i)) > 0)        // Find the correct child to insert at.
+            while (i < this.keys.size() && x.compareTo(this.keys.get(i)) > 0)        // Najděte správného potomka, kterého chcete vložit
                 i++;
             boolean childWasSplit;
 
-            if (i < this.children.size())                               // The node is not a leaf, so I can recursively insert.
+            if (i < this.children.size())                               // Uzel není list, takže mohu rekurzivně vložit
                 childWasSplit = this.children.get(i).insert(x);
-            else                                                        // Its a leaf, just add the key and then check if it needs to split.
+            else                                                        // Je to list, stačí přidat klíč a pak zkontrolovat, zda je třeba rozdělit
             {
                 this.addKey(x);
-                size++;                                                 // Key wasn't a duplicate a could be inserted in the tree, therefore increase the size.
-                if (this.keys.size() == 3)
+                size++;                                                 // Klíč nebyl duplikát a mohl být vložen do stromu, proto zvětšujte jeho velikost
                 {
-                    this.splitify();                                    // Split the node and return true to let the parent know
-                    return true;                                        // that child was split.
+                    this.splitify();                                    // Rozdělte uzel a vraťte true, abyste informovali rodiče
+                    return true;                                        // Potomek byl rozdělen
                 }
                 return false;
             }
 
             if (childWasSplit)
-            {                                                           // Child was split and parent might be a 2-node or 3-node.
-                Node tempChild = this.children.get(i);                  // Copy of the split child because it will get modified by overwriting parent's children
-                this.addKey(tempChild.keys.get(0));                     // "Moving the child's key to the parent"
-                this.children.set(i, tempChild.children.get(0));        // The current child is replaced by its left child
-                this.children.add(i+1, tempChild.children.get(1));// Add the right child to the next index. ArrayList does the shifting automatically.
-                if (this.children.size() == 4)                           // The node is really full, it was 3-node and now it became 4-node, so it
+            {                                                           // Potomek byl rozdělen a rodič může být 2-uzel nebo 3-uzel
+                Node tempChild = this.children.get(i);                  // Kopie rozděleného potomka, protože se změní přepsáním potomků rodičů
+                this.addKey(tempChild.keys.get(0));                     // Přesunutí klíče od potomka k rodiči"
+                this.children.set(i, tempChild.children.get(0));        // Aktuální potomek je nahrazen levým potomkem
+                this.children.add(i+1, tempChild.children.get(1));      // Přidejte pravého potomka do dalšího indexu. ArrayList provede řazení automaticky.
+                if (this.children.size() == 4)                          // Uzel je opravdu plný, byl to 3-uzel a nyní se stal 4-uzlem, takže to bylo
                 {
-                    this.splitify();                                    // needs to redistribute its children by creating nodes out of itself.
+                    this.splitify();                                    // potřebuje přerozdělit své potomky vytvořením uzlů ze sebe
                     return true;
                 }
-            }                                                           // It was a 2-node so the split child's children became parent's children and
-            return false;                                               // and it's key adjusted inside the parent so it became a 3-node.
+            }                                                           // Byl to 2-uzel, takže se potomci rozštěpeného potomka staly potomky rodičů a
+            return false;                                               // je to klíč upravený uvnitř nadřazeného tak, aby se stal 3-uzlem
         }
 
         private void splitify()
         {
             Node left = new Node(this.keys.get(0));
             Node right = new Node(this.keys.get(2));
-            if (this.children.size() == 4)                      // If the node is overfull, balance everything
-            {                                                   // by giving left-most two nodes to the left child
-                left.children.add(this.children.get(0));        // and the right most two nodes to the right child.
+            if (this.children.size() == 4)                      // Pokud je uzel přeplněný, vyrovnejte vše
+            {                                                   // tím, že vlevo dáte nejvýše dva uzly
+                left.children.add(this.children.get(0));        // a nejvíce dva uzly k pravému potomku
                 left.children.add(this.children.get(1));
                 right.children.add(this.children.get(2));
                 right.children.add(this.children.get(3));
             }
             this.children.clear();
-            this.children.add(left);                            // Set the new left and right child of "this"
+            this.children.add(left);                            // nastavení nového pravého a levého potomka
             this.children.add(right);
 
-            T tempKey = this.keys.get(1);                       // Also, the keys have been passed to the children
-            this.keys.clear();                                  // so modify it. In the end, only the middle key should be
-            this.keys.add(tempKey);                             // there.
+            T tempKey = this.keys.get(1);                       // Také klíče byly předány potomkům
+            this.keys.clear();                                  // tak to upravte. Nakonec by tam měl být pouze prostřední klíč
+            this.keys.add(tempKey);                             
         }
 
         private Node search(T val)
         {
-            if (this.children.size() == 0 || this.keys.contains(val))                     // If the node is a leaf or has the key, return that node
+            if (this.children.size() == 0 || this.keys.contains(val))          // Pokud je uzel list nebo má klíč, vraťte tento uzel
                 return this;
             else
             {
                 int i = 0;
-                while (i < this.keys.size() && val.compareTo(this.keys.get(i)) > 0)       // Else recursively search that appropriate branch by making use
-                    i++;                                                                  // of the index i.
+                while (i < this.keys.size() && val.compareTo(this.keys.get(i)) > 0)       // Nebo rekurzivně prohledejte příslušnou větev pomocí indexu i
+                    i++;                                                                 
                 return this.children.get(i).search(val);
             }
         }
 
-        public String toString()            // toString method
+        public String toString()            // toString metoda
         {
             return this.keys.get(0) + (this.keys.size() == 2 ? " " + this.keys.get(1) : "");
         }
