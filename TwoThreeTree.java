@@ -23,12 +23,12 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
     void insert(T x)
     {
-        if (root == null)                           // If root is null, then create a new root with null as the parent
+        if (root == null)                           // Pokud je root nulový, pak vytvoří nový root s null jako nadřazeným
         {
             root = new Node(x);
             size++;
         }
-        root.insert(x);                             // Otherwise induce a recursive insert.
+        root.insert(x);                             // Jinak vyvolá rekurzivní vložení
         modified = true;
     }
 
@@ -39,7 +39,7 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
     boolean search(T x)
     {
-        if (root == null)                           // If the root is null, then tree doesn't exist -> return null
+        if (root == null)                           // Pokud je root nulový, pak strom neexistuje a vrací null
             return false;
         return root.search(x).keys.contains(x);
     }
@@ -52,46 +52,48 @@ class TwoThreeTree<T extends Comparable<T>> implements Iterable
 
     public Iterator<T> iterator()
     {
-        if (modified)                           // Build in-order Linked-List only if the tree was modified.
+        if (modified)                                 // Vytváří uspořádaný propojený seznam , pouze pokud byl strom upraven
         {
-            traverse.traverseTree();            // Traverse the tree
-            modified = false;                   // Set flag to false since we just built a linked-list.
+            traverse.traverseTree();                  // Procházení stromue
+            modified = false;                         // Nastaví flag na false, protože se právě vytvořil propojený seznam
         }
-        return traverse.ordered.iterator();     // Delegate the task of iterator to Linked-List's in built iterator.
+        return traverse.ordered.iterator();           // Delegujte úlohu iterátoru na vestavěný iterátor propojeného seznamu.
     }
 
     //-----------------------------------------Inner Iterator Class-------------------------------------------------//
 
-    private class Traversal
+    private class Traversal                            // vytvoření třídy Traversal
     {
         ArrayList<T> ordered;
 
         void traverseTree()
         {
-            ordered = new ArrayList<>();                   // Reset the ordered list. traverseTree will be only called in case of modification
-            traverse(root);                                 // Initialize traversal from the root.
+            ordered = new ArrayList<>();                // Resetuje seřazený seznam. traverseTree se volána pouze v případě modifikace
+            traverse(root);                             // Initializace traversal z root.
         }
 
         void traverse(Node n)
         {
-            if (n.children.size() == 0)                     // If it's a leaf node, add all its key to the linked list
+            if (n.children.size() == 0)                  // Pokud je to listový uzel, přidá to do propojeného seznamu veškerý klíč
                 ordered.addAll(n.keys);
             else
             {
-                traverse(n.children.get(0));                // Otherwise, first traverse the left branch
-                ordered.add(n.keys.get(0));                 // When it is done, create add key 1 of the node n to keep it ordered.
-                traverse(n.children.get(1));                // Then traverse the middle/right branch of n.
-                if (n.children.size() == 3)                 // If there are 3 branches, then we still need to traverse it.
+                traverse(n.children.get(0));              // Jinak nejprve přejděte levou větev
+                ordered.add(n.keys.get(0));               // Po dokončení přidá nový klíč 1 uzlu n, aby byl zachován.
+                traverse(n.children.get(1));              // Potom projde prostřední nebo pravou větev n
+                if (n.children.size() == 3)               // Pokud existují 3 větve, musíme to ještě projít.
                 {
-                    ordered.add(n.keys.get(1));             // Before we traverse, add the 2nd key of n to the list since everything is going to be greater than it in the right branch.
-                    traverse(n.children.get(2));            // Then traverse the last branch and add all encountered nodes in order.
+                    ordered.add(n.keys.get(1));           // Než se to projde, přidá do seznamu druhou klávesu n, protože vše bude větší než v pravé větvi.
+                    traverse(n.children.get(2));          // Potom se projde poslední větev a přidá všechny nalezené uzly v pořadí.
                 }
             }
         }
     }
 
     //-------------------------------------------INNER CLASS NODE---------------------------------------------------//
-    private class Node
+    
+    
+    private class Node                                     // vytvoření třídy Node
     {
         ArrayList<T> keys = new ArrayList<>(3);
         ArrayList<Node> children = new ArrayList<>(4);
